@@ -3,6 +3,8 @@ const url = require('url');
 const { parse } = require('querystring');
 const fs = require("fs");
 const path = require("path");
+const crypto = require('crypto');
+
 
 
 http.createServer(function (request, response) {
@@ -57,7 +59,8 @@ http.createServer(function (request, response) {
     }
     else
     {
-        response.end(JSON.stringify("vsdg"));
+        const uuid = crypto.randomUUID();
+        response.end(JSON.stringify(uuid));
     }
   })
   .listen(3000, "127.0.0.1", function () {
