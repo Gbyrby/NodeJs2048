@@ -1,0 +1,25 @@
+{
+  "name": "nodejs2048",
+  "version": "1.0.0",
+  "description": "Clone of 2048 game, using Node.js",
+  "homepage": "https://github.com/Gbyrby/NodeJs2048#readme",
+  "bugs": {
+    "url": "https://github.com/Gbyrby/NodeJs2048/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gbyrby/NodeJs2048.git"
+  },
+  "license": "ISC",
+  "author": "Gbyrby",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.18.0"
+  }
+}
