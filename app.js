@@ -6,8 +6,11 @@ const path = require("path");
 
 
 http.createServer(function (request, response) {
-    const pathparam = url.parse(request.url, true).pathname;
 
+    const pathparam = url.parse(request.url, true).pathname;
+    console.log(request.method+' '+pathparam)
+
+    // For main page, get html
     if (request.method == "GET" && pathparam == "/") {
         const filePath = path.join(__dirname, 'index.html');
 
@@ -21,8 +24,40 @@ http.createServer(function (request, response) {
         response.end(data);
       });
       return;
-    }else{
-        response.end(request.method+' '+pathparam);
+    }
+    
+    if (request.method == "GET" && pathparam == "/style.css") {
+        const filePath = path.join(__dirname, 'style.css');
+    
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          response.statusCode = 500;
+          response.end("Server error");
+          return;
+        }
+        response.setHeader('Content-Type','text/css'+ '; charset=utf-8');
+        response.end(data);
+      });
+      return;
+    }
+    
+     if (request.method == "GET" && pathparam == "/client.js") {
+        const filePath = path.join(__dirname, 'client.js');
+    
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          response.statusCode = 500;
+          response.end("Server error");
+          return;
+        }
+        response.setHeader('Content-Type','application/json'+ '; charset=utf-8');
+        response.end(data);
+      });
+      return;
+    }
+    else
+    {
+        response.end(JSON.stringify("vsdg"));
     }
   })
   .listen(3000, "127.0.0.1", function () {
