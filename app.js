@@ -5,16 +5,23 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require('crypto');
 
-
+const sessions = [];
 
 http.createServer(function (request, response) {
 
     const pathparam = url.parse(request.url, true).pathname;
-    console.log(request.method+' '+pathparam)
+    console.log(request.method + ' ' + pathparam + ' ' + request.headers.cookie)
 
     // For main page, get html
     if (request.method == "GET" && pathparam == "/") {
         const filePath = path.join(__dirname, 'index.html');
+
+
+        if(sessions.indexOf(request.headers.cookie)){
+          console.log("YOU IN GAME! reconnect....maybe")
+        }
+
+
 
       fs.readFile(filePath, (err, data) => {
         if (err) {
@@ -60,6 +67,14 @@ http.createServer(function (request, response) {
     else
     {
         const uuid = crypto.randomUUID();
+        const cookie = 'session=' + uuid+'; Max-Age=14400; HttpOnly';
+        sessions.push(uuid);
+        console.log(sessions);
+        setTimeout(()=>{
+          sessions.shift();
+          console.log(sessions);
+        },14400000);
+        response.setHeader('Set-Cookie', cookie);
         response.end(JSON.stringify(uuid));
     }
   })
