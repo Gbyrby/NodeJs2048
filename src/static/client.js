@@ -1,3 +1,28 @@
+let interval;
+let gameData = {};
+
+function openGame(result) {
+    document.querySelector(".game-form").style.display = "none";
+    document.querySelector(".elements-container").style.display = "grid";
+    document.querySelector(".score").style.display = "flex";
+
+    // Обновляем UI данными от сервера
+    document.querySelector(".stats p").textContent =
+        `Игрок: ${result.Name} ${result.SessionID}`;
+    updateScore(result.Score);
+    updateBoard(result.Board);
+    clearInterval(interval);
+    interval = setInterval(() => {
+        keepAlive();
+    }, 1000);
+}
+function openForm() {
+    document.querySelector(".game-form").style.display = "grid";
+    document.querySelector(".elements-container").style.display = "none";
+    document.querySelector(".score").style.display = "none";
+    clearInterval(interval);
+}
+
 async function handleFormSubmit(event) {
     event.preventDefault(); // ✅ Блокирует перезагрузку
 
@@ -19,19 +44,7 @@ async function handleFormSubmit(event) {
         if (response.ok) {
             console.log("✅ Сервер ответил:", result);
             // Скрываем форму, показываем игру
-            document.querySelector(".game-form").style.display = "none";
-            document.querySelector(".elements-container").style.display =
-                "grid";
-            document.querySelector(".score").style.display = "flex";
-
-            // Обновляем UI данными от сервера
-            document.querySelector(".stats p").textContent =
-                `Игрок: ${username} ${result.SessionID}`;
-            updateScore(result.Score);
-            updateBoard(result.Board);
-            setInterval(() => {
-                keepAlive();
-            }, 1000);
+            openGame(result);
         } else {
             console.error("❌ Ошибка сервера:", result.error);
             alert("Ошибка: " + result.error);
@@ -71,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function checkAuth() {
     try {
-        const response = await fetch("/api/auth", {
+        const response = await fetch("/api/resync", {
             method: "GET",
             credentials: "include",
         });
@@ -81,20 +94,9 @@ async function checkAuth() {
         if (response.ok && typeof result === "object") {
             console.log("✅ Сервер ответил:", result);
 
-            document.querySelector(".game-form").style.display = "none";
-            document.querySelector(".elements-container").style.display =
-                "grid";
-            document.querySelector(".score").style.display = "flex";
-            // Обновляем UI данными от сервера
-            document.querySelector(".stats p").textContent =
-                `Игрок: ${result.Name} ${result.SessionID}`;
-            updateScore(result.Score);
-            updateBoard(result.Board);
-            setInterval(() => {
-                keepAlive();
-            }, 1000);
+            openGame(result);
         } else {
-            document.querySelector(".game-form").style.display = "block";
+            openForm();
         }
     } catch (error) {}
 }
@@ -108,10 +110,15 @@ async function keepAlive() {
 
         const result = await response.json();
 
-        if (response.ok && typeof result.success === "true") {
+        if (response.ok || typeof result.success) {
+            console.log("✅ Сервер ответил:", result);
+        } else {
+            openForm();
             console.log("✅ Сервер ответил:", result);
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log("✅ Сервер не ответил:", error);
+    }
 }
 
 checkAuth();

@@ -19,7 +19,7 @@ function parseCookies(req) {
 module.exports = [
     {
         method: "GET",
-        path: "auth",
+        path: "resync",
         handler(request, response) {
             let user = getUser(parseCookies(request).SessionID);
             console.log(parseCookies(request).SessionID);
@@ -32,7 +32,7 @@ module.exports = [
                 response.setHeader("Set-Cookie", cookie);
                 response.end(JSON.stringify(user));
             } else {
-                response.end(JSON.stringify("ТЫ НЕ В ИГРЕ"));
+                response.end(JSON.stringify("No found user"));
             }
         },
     },
