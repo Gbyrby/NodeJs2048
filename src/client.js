@@ -6,7 +6,7 @@ async function handleFormSubmit(event) {
     
     try {
         // ✅ Отправляем POST запрос на сервер
-        const response = await fetch('/start', {
+        const response = await fetch('/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
