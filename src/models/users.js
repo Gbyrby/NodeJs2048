@@ -45,15 +45,13 @@ console.log(users);
 
 setInterval(
     () => {
-        const time = Date.now();
-        for (const [id, user] of users) {
-            if (time - user.Time.getTime() > 10000) {
-                users.delete(id);
-            }
+    const time = Date.now();
+    for (const [id, user] of users) {
+        if (time - user.Time > 5000) {
+            users.delete(id);
         }
-    },
-    1000 * 60 * 10,
-);
+    }
+}, 5000);
 
 module.exports = {
     createUser,

@@ -29,6 +29,9 @@ async function handleFormSubmit(event) {
                 `Игрок: ${username} ${result.SessionID}`;
             updateScore(result.Score);
             updateBoard(result.Board);
+            setInterval(() => {
+                keepAlive();
+            }, 1000);
         } else {
             console.error("❌ Ошибка сервера:", result.error);
             alert("Ошибка: " + result.error);
@@ -87,6 +90,26 @@ async function checkAuth() {
                 `Игрок: ${result.Name} ${result.SessionID}`;
             updateScore(result.Score);
             updateBoard(result.Board);
+            setInterval(() => {
+                keepAlive();
+            }, 1000);
+        } else {
+            document.querySelector(".game-form").style.display = "block";
+        }
+    } catch (error) {}
+}
+
+async function keepAlive() {
+    try {
+        const response = await fetch("/api/keep-alive", {
+            method: "POST",
+            credentials: "include",
+        });
+
+        const result = await response.json();
+
+        if (response.ok && typeof result.success === "true") {
+            console.log("✅ Сервер ответил:", result);
         }
     } catch (error) {}
 }

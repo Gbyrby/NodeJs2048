@@ -137,6 +137,7 @@
         border-radius: 20px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         backdrop-filter: blur(10px);
+        display: none;
       }
 
       .form-group {
@@ -213,6 +214,7 @@
         font-weight: bold;
 
         max-width: 220px;
+        display: none;
       }
 
       .score p {

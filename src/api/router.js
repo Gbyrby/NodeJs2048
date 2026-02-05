@@ -7,8 +7,9 @@ const crypto = require("crypto");
 
 const registerRoutes = require("./register.js");
 const resyncRoutes = require("./resync.js");
+const keepAliveRoutes = require("./keep-alive.js");
 
-const routes = [...registerRoutes, ...resyncRoutes];
+const routes = [...registerRoutes, ...resyncRoutes, ...keepAliveRoutes];
 
 module.exports = [
     {
