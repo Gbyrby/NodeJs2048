@@ -1,22 +1,21 @@
 const url = require("url");
 
-const htmlRoutes = require("./routes/statichtml");
-const cssRoutes = require("./routes/staticcss")
-const jsRoutes = require("./routes/staticjs")
-const authRoutes = require("./routes/auth")
+const staticRoutes = require("./static/router.js");
+const apiRoutes = require("./api/router.js")
 
 const routes = [
-    ...htmlRoutes,
-    ...cssRoutes,
-    ...jsRoutes,
-    ...authRoutes
+    ...staticRoutes,
+    ...apiRoutes,
 ];
 
 module.exports = (req, res) => {
-    const { pathname } = url.parse(req.url);
 
+    let { pathname } = url.parse(req.url);
+    if(pathname === '/'){pathname = '/static/index.html'}
+
+    pathname = pathname.split('/')[1]
     const route = routes.find(r =>
-        r.method === req.method && r.path === pathname
+        r.path === pathname
     );
 
     if (route) {

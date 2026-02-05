@@ -1,13 +1,6 @@
 const http = require("http");
-const url = require('url');
-const { parse } = require('querystring');
-const fs = require("fs");
-const path = require("path");
-const crypto = require('crypto');
 
 const router = require('./router')
-
-const sessions = [];
 
 http.createServer(function (request, response) {
     router(request,response)
