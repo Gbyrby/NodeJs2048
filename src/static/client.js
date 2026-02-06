@@ -143,6 +143,7 @@ function openGame(result) {
     document.getElementById("name").textContent = result.Name;
     updateScore(result.Score);
     updateBoard(result.Board);
+    updateMoves(result.Moves);
     clearInterval(keepAliveInterval);
     keepAliveInterval = setInterval(() => {
         keepAlive();
