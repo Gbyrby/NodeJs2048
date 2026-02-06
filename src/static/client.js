@@ -152,13 +152,7 @@ function openForm() {
     document.querySelector(".score").style.display = "none";
     clearInterval(keepAliveInterval);
 }
-
-async function handleFormSubmit(event) {
-    event.preventDefault(); // ✅ Блокирует перезагрузку
-
-    const form = event.target;
-    const username = form.Username.value;
-
+async function register(username) {
     try {
         // ✅ Отправляем POST запрос на сервер
         const response = await fetch("/api/register", {
@@ -183,6 +177,13 @@ async function handleFormSubmit(event) {
         console.error("❌ Ошибка сети:", error);
         alert("Не удалось подключиться к серверу");
     }
+}
+async function handleFormSubmit(event) {
+    event.preventDefault(); // ✅ Блокирует перезагрузку
+
+    const form = event.target;
+    const username = form.Username.value;
+    register(username);
 }
 
 function updateScore(score) {
@@ -240,10 +241,15 @@ async function keepAlive() {
 
         const result = await response.json();
 
-        if (response.ok || typeof result.success) {
+        if (response.ok && result.success === true) {
             console.log("✅ Сервер ответил:", result);
         } else {
-            openForm();
+            if (gameData.Name) {
+                register(gameData.Name);
+            } else {
+                openForm();
+            }
+
             console.log("✅ Сервер ответил:", result);
         }
     } catch (error) {
