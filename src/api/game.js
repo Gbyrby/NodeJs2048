@@ -87,10 +87,6 @@ module.exports = [
                 }
 
                 updateUserTime(user.SessionID);
-                const cookie = [
-                    `SessionID=${user.SessionID}; Max-Age=1000;Path=/;`,
-                ];
-                response.setHeader("Set-Cookie", cookie);
                 response.end(
                     JSON.stringify({
                         Score: user.Score,

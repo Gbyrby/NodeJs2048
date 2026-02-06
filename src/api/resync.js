@@ -24,11 +24,6 @@ module.exports = [
             let user = getUser(parseCookies(request).SessionID);
 
             if (user) {
-                updateUserTime(user.SessionID);
-                const cookie = [
-                    `SessionID=${user.SessionID}; Max-Age=1000;Path=/;`,
-                ];
-                response.setHeader("Set-Cookie", cookie);
                 response.end(JSON.stringify(user));
             } else {
                 response.end(JSON.stringify("No found user"));
