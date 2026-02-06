@@ -1,3 +1,4 @@
+const { getTopUsers } = require("../models/db.js");
 const { getUser } = require("../models/users.js");
 function parseCookies(req) {
     const raw = req.headers.cookie || "";
@@ -13,13 +14,15 @@ module.exports = [
     {
         method: "GET",
         path: "resync",
-        handler(request, response) {
+        handler: async function (request, response) {
             let user = getUser(parseCookies(request).SessionID);
-
+            let leaderboards = await getTopUsers();
             if (user) {
-                response.end(JSON.stringify(user));
+                response.end(
+                    JSON.stringify({ user, Leaderboards: leaderboards }),
+                );
             } else {
-                response.end(JSON.stringify("No found user"));
+                response.end(JSON.stringify({ Leaderboards: leaderboards }));
             }
         },
     },

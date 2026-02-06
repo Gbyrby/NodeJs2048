@@ -1,5 +1,5 @@
 const { createUser, getUser } = require("../models/users.js");
-
+const { getTopUsers } = require("../models/db.js");
 function parseCookies(req) {
     const raw = req.headers.cookie || "";
     return Object.fromEntries(
@@ -44,8 +44,12 @@ module.exports = [
             const cookie = [
                 `SessionID=${user.SessionID}; Max-Age=1000;Path=/;`,
             ];
+
+            let leaderboards = await getTopUsers();
             response.setHeader("Set-Cookie", cookie);
-            response.end(JSON.stringify(user));
+            response.end(
+                JSON.stringify({ user, Leaderboards: leaderboards }),
+            );
         },
     },
 ];

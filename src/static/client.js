@@ -1,5 +1,6 @@
 let keepAliveInterval;
 let gameData = {};
+let inGame = false;
 // gameData.Board - массив 4x4 с числами
 // updateBoard(board) - уже есть, вызывает обновление интерфейса
 function updateMoves(moves) {
@@ -134,11 +135,31 @@ function move(dir) {
     }
 }
 
+function updateLeaderboard(leaderboards) {
+    const tbody = document.getElementById("leaderboardBody");
+    if (!leaderboards?.length) {
+        tbody.innerHTML = '<tr><td colspan="4">Нет данных</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = leaderboards
+        .map(
+            (user, index) => `
+        <tr class="rank-${index + 1 > 3 ? "normal" : index + 1}">
+            <td>${index + 1}.</td>
+            <td>${user.name || user.Name || "Без имени"}</td>
+            <td>${user.score || user.Score || 0}</td>
+            <td>${user.moves || user.Moves || 0}</td>
+        </tr>
+    `,
+        )
+        .join("");
+}
+
 function openGame(result) {
+    inGame = true;
     document.querySelector(".game-form").style.display = "none";
-    document.querySelector(".elements-container").style.display = "grid";
-    document.querySelector(".UI-block").style.display = "flex";
-    document.querySelector(".hud-action").style.display = "flex";
+    document.querySelector(".right-section").style.display = "flex";
 
     // Обновляем UI данными от сервера
     document.getElementById("name").textContent = result.Name;
@@ -151,10 +172,9 @@ function openGame(result) {
     }, 3000);
 }
 function openForm(FormText) {
+    inGame = false;
     document.querySelector(".game-form").style.display = "grid";
-    document.querySelector(".elements-container").style.display = "none";
-    document.querySelector(".UI-block").style.display = "none";
-    document.querySelector(".hud-action").style.display = "none";
+    document.querySelector(".right-section").style.display = "none";
 
     const startBtn = document.getElementById("startBtn");
     startBtn.value = FormText;
@@ -171,11 +191,15 @@ async function register(username) {
         });
 
         const result = await response.json(); // Получаем JSON ответ
-        gameData = { ...gameData, ...result };
+        gameData = { ...gameData, ...result.user };
         if (response.ok) {
             console.log("✅ Сервер ответил:", result);
             // Скрываем форму, показываем игру
-            openGame(result);
+            openGame(result.user);
+
+            if (result.Leaderboards) {
+                updateLeaderboard(result.Leaderboards);
+            }
         } else {
             console.error("❌ Ошибка сервера:", result.error);
             alert("Ошибка: " + result.error);
@@ -237,12 +261,17 @@ async function resync() {
 
         const result = await response.json();
 
-        if (response.ok && typeof result === "object") {
-            console.log("✅ Сервер ответил:", result);
-            gameData = { ...gameData, ...result };
-            openGame(result);
-        } else {
-            openForm("Начать игру");
+        if (response.ok) {
+            if (result.Leaderboards) {
+                updateLeaderboard(result.Leaderboards);
+            }
+            if (result.user) {
+                console.log("✅ Сервер ответил:", result);
+                gameData = { ...gameData, ...result.user };
+                openGame(result.user);
+            } else {
+                openForm("Начать игру");
+            }
         }
     } catch (error) {}
 }
@@ -298,6 +327,9 @@ async function fetchRestart() {
         const result = await response.json(); // Получаем JSON ответ
 
         if (response.ok) {
+            if (result.Leaderboards) {
+                updateLeaderboard(result.Leaderboards);
+            }
             console.log("✅ Сервер ответил:", result);
             gameData.Board = clearBoard();
             gameData.Score = 0;
@@ -371,19 +403,38 @@ async function fetchMove(dir) {
 }
 
 document.addEventListener("keydown", (event) => {
+    if (!inGame) {
+        return;
+    }
     let dir;
 
     switch (event.key) {
         case "ArrowUp":
+        case "w":
+        case "W":
+        case "й":
+        case "Й":
             dir = "up";
             break;
         case "ArrowDown":
+        case "s":
+        case "S":
+        case "ы":
+        case "Ы":
             dir = "down";
             break;
         case "ArrowLeft":
+        case "a":
+        case "A":
+        case "ф":
+        case "Ф":
             dir = "left";
             break;
         case "ArrowRight":
+        case "d":
+        case "D":
+        case "в":
+        case "В":
             dir = "right";
             break;
         case "r":
@@ -393,6 +444,7 @@ document.addEventListener("keydown", (event) => {
             resync();
             break;
     }
+
     if (dir) {
         fetchMove(dir);
     }

@@ -1,11 +1,12 @@
 const { Pool } = require("pg");
+require("dotenv").config();
 
 const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "postgres", //TODO: add this to .end file
-    password: "password",
-    port: 5432,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME || "postgres", // ✅ Добавили из .env
+    password: process.env.DB_PASS,
+    port: parseInt(process.env.DB_PORT) || 5432, // ✅ Число + дефолт
 });
 
 async function getTopUsers() {
@@ -30,10 +31,12 @@ async function getTopUsers() {
 }
 
 async function createUser(name, score, moves) {
-    await pool.query(
-        "INSERT INTO users (name, score, moves) VALUES ($1, $2, $3)",
-        [name, score, moves],
-    );
+    try {
+        await pool.query(
+            "INSERT INTO users (name, score, moves) VALUES ($1, $2, $3)",
+            [name, score, moves],
+        );
+    } catch (error) {}
 }
 
 module.exports = { getTopUsers, createUser };
