@@ -53,11 +53,11 @@ function deleteUser(SessionID) {
 setInterval(() => {
     const time = Date.now();
     for (const [id, user] of users) {
-        if (time - user.Time > 5000) {
+        if (time - user.Time > 1000 * 60) {
             users.delete(id);
         }
     }
-}, 5000);
+}, 1000 * 60);
 
 module.exports = {
     createUser,

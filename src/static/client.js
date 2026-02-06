@@ -242,8 +242,10 @@ async function keepAlive() {
         const result = await response.json();
 
         if (response.ok && result.success === true) {
+            document.getElementById("overlay").classList.remove("dark");
             console.log("✅ Сервер ответил:", result);
         } else {
+            document.getElementById("overlay").classList.remove("dark");
             if (gameData.Name) {
                 register(gameData.Name);
             } else {
@@ -254,6 +256,7 @@ async function keepAlive() {
         }
     } catch (error) {
         console.log("✅ Сервер не ответил:", error);
+        document.getElementById("overlay").classList.add("dark");
     }
 }
 

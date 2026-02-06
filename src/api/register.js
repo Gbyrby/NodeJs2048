@@ -44,7 +44,7 @@ module.exports = [
 
             const user = createUser(username);
 
-            const cookie = [`SessionID=${user.SessionID}; Max-Age=10;Path=/;`];
+            const cookie = [`SessionID=${user.SessionID}; Max-Age=1000;Path=/;`];
             response.setHeader("Set-Cookie", cookie);
             response.end(JSON.stringify(user));
         },
