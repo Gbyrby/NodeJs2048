@@ -262,6 +262,7 @@ body {
     border: none;
     border-radius: 12px;
     padding: 14px 28px;
+    margin: 10px;
     font-size: 0.75em;
     font-weight: bold;
     text-transform: uppercase;

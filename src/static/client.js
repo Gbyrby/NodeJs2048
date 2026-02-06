@@ -139,6 +139,7 @@ function openGame(result) {
     document.querySelector(".elements-container").style.display = "grid";
     document.querySelector(".UI-block").style.display = "flex";
     document.querySelector(".hud-button").style.display = "flex";
+    document.querySelector(".restart-button").style.display = "flex";
     // Обновляем UI данными от сервера
     document.getElementById("name").textContent = result.Name;
     updateScore(result.Score);
@@ -154,6 +155,7 @@ function openForm(FormText) {
     document.querySelector(".elements-container").style.display = "none";
     document.querySelector(".UI-block").style.display = "none";
     document.querySelector(".hud-button").style.display = "none";
+    document.querySelector(".restart-button").style.display = "none";
     const startBtn = document.getElementById("startBtn");
     startBtn.value = FormText;
     clearInterval(keepAliveInterval);
@@ -220,8 +222,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".game-form");
     form.addEventListener("submit", handleFormSubmit);
 
-    const nameButton = document.querySelector(".change-name-button");
-    nameButton.addEventListener("click", handleFormChangeName);
+    const NameButton = document.querySelector(".change-name-button");
+    NameButton.addEventListener("click", handleFormChangeName);
+
+    const restartButton = document.querySelector(".restart-button");
+    restartButton.addEventListener("click", fetchRestart);
 });
 
 async function resync() {
