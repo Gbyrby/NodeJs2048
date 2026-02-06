@@ -51,7 +51,19 @@
         transition: all 0.2s ease;
         box-shadow: 0 8px 25px rgba(118, 118, 118, 0.4);
       }
+      #overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0);
+        pointer-events: none;
+        transition: background 1s ease;
+        z-index: 9999;
+      }
 
+      /* состояние затемнения */
+      #overlay.dark {
+        background: rgba(0, 0, 0, 0.75);
+      }
       /* Пустая ячейка */
       .block:empty {
         background: rgba(238, 228, 218, 0.35);

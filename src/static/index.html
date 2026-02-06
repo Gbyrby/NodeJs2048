@@ -1,63 +1,62 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2048 Game</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>2048 Game</title>
+        <link rel="stylesheet" href="/static/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="game">
+                <form class="game-form" method="post">
+                    <div class="form-group">
+                        <label for="Username">Введите ваше имя:</label>
+                        <input
+                            type="text"
+                            id="Username"
+                            name="Username"
+                            placeholder="Игрок 2048"
+                            required
+                        />
+                        <input
+                            type="submit"
+                            value="Начать игру"
+                            id="startBtn"
+                        />
+                    </div>
+                </form>
 
-  </head>
-  <body>
-    <div class="container">
-      <div class="game">
-        <form class="game-form" method="post">
-          <div class="form-group">
-            <label for="Username">Введите ваше имя:</label>
-            <input
-              type="text"
-              id="Username"
-              name="Username"
-              placeholder="Игрок 2048"
-              required
-            />
-            <input type="submit" value="Начать игру" id="startBtn" />
-          </div>
-        </form>
+                <div class="elements-container">
+                    <div class="block bl-2">2</div>
+                    <div class="block bl-4">4</div>
+                    <div class="block bl-8">8</div>
+                    <div class="block bl-16">16</div>
 
-        <div class="elements-container">
-          <div class="block bl-2">2</div>
-          <div class="block bl-4">4</div>
-          <div class="block bl-8">8</div>
-          <div class="block bl-16">16</div>
+                    <div class="block bl-32">32</div>
+                    <div class="block bl-64">64</div>
+                    <div class="block bl-128">128</div>
+                    <div class="block bl-256">256</div>
 
-          <div class="block bl-32">32</div>
-          <div class="block bl-64">64</div>
-          <div class="block bl-128">128</div>
-          <div class="block bl-256">256</div>
+                    <div class="block bl-512">512</div>
+                    <div class="block bl-1024">1024</div>
+                    <div class="block bl-2048">2048</div>
+                    <div class="block bl-2048">2048</div>
 
-          <div class="block bl-512">512</div>
-          <div class="block bl-1024">1024</div>
-          <div class="block bl-2048">2048</div>
-          <div class="block bl-2048">2048</div>
-
-          <div class="block bl-2048">2048</div>
-          <div class="block bl-2048">2048</div>
-          <div class="block bl-2048">2048</div>
-          <div class="block"></div>
+                    <div class="block bl-2048">2048</div>
+                    <div class="block bl-2048">2048</div>
+                    <div class="block bl-2048">2048</div>
+                    <div class="block"></div>
+                </div>
+                <div class="score" id="score">
+                    <p>Your score: <span id="scoreValue">0</span></p>
+                </div>
+            </div>
+            <div class="stats">
+                <p></p>
+            </div>
         </div>
-        <div class="score" id="score">
-          <p>Your score: <span id="scoreValue">0</span></p>
-        </div>
-      </div>
-      <div class="stats">
-        <p></p>
-      </div>
-    </div>
-
-<script src="/static/client.js">
-
-</script>
-
-
-  </body>
+        <div id="overlay"></div>
+        <script src="/static/client.js"></script>
+    </body>
 </html>

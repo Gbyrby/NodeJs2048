@@ -2,6 +2,20 @@ let keepAliveInterval;
 let gameData = {};
 // gameData.Board - массив 4x4 с числами
 // updateBoard(board) - уже есть, вызывает обновление интерфейса
+
+function handleGameOver() {
+    console.log("💀 GAME OVER");
+    // ⏱ через 3 секунды — затемнение
+    setTimeout(() => {
+        document.getElementById("overlay").classList.add("dark");
+    }, 500);
+
+    // ⏱ через 6 секунд — рестарт
+    setTimeout(() => {
+        fetchRestart();
+        document.getElementById("overlay").classList.remove("dark");
+    }, 2000);
+}
 function isGameOver(board) {
     // 1️⃣ Есть пустая клетка — игра продолжается
     for (let row = 0; row < 4; row++) {
@@ -315,8 +329,7 @@ async function fetchMove(dir) {
                 }
 
                 if (isGameOver(gameData.Board)) {
-                    console.log("Проигрыш!");
-                    fetchRestart();
+                    handleGameOver();
                 }
             }
             // Скрываем форму, показываем игру
