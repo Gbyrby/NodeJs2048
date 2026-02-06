@@ -1,4 +1,4 @@
-const { move, clearBoard, addRandomTile } = require("./board.js");
+const { clearBoard, addRandomTile } = require("./board.js");
 
 const users = new Map();
 
@@ -25,25 +25,14 @@ function createUser(Name) {
     return users.get(SessionID);
 }
 
-function setUser(user) {
-    users.set(user.SessionID, {
-        ...user,
-    });
-    return users.get(user.SessionID);
-}
-
 function getUser(SessionID) {
     return users.get(SessionID);
 }
 
-function updateUserTime(SessionID) {
-    const user = users.get(SessionID);
+function updateUserTime(user) {
     if (!user) return; // пользователь не найден
 
-    users.set(SessionID, {
-        ...user,
-        Time: Date.now(),
-    });
+    user.Time = Date.now();
 }
 
 function deleteUser(SessionID) {
@@ -64,5 +53,4 @@ module.exports = {
     getUser,
     updateUserTime,
     deleteUser,
-    setUser,
 };

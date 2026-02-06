@@ -1,9 +1,4 @@
-const http = require("http");
-const url = require("url");
-const { parse } = require("querystring");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
+const { URL } = require("url");
 
 const registerRoutes = require("./register.js");
 const resyncRoutes = require("./resync.js");
@@ -21,7 +16,7 @@ module.exports = [
     {
         path: "api",
         handler(request, response) {
-            let { pathname } = url.parse(request.url);
+            let pathname = new URL(request.url, "http://127.0.0.1").pathname;
 
             const route = routes.find((route) => {
                 return (

@@ -1,10 +1,3 @@
-const http = require("http");
-const url = require("url");
-const { parse } = require("querystring");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
-
 const { getUser, updateUserTime } = require("../models/users.js");
 
 function parseCookies(req) {
@@ -25,7 +18,7 @@ module.exports = [
             let user = getUser(parseCookies(request).SessionID);
 
             if (user) {
-                updateUserTime(user.SessionID);
+                updateUserTime(user);
                 const cookie = [
                     `SessionID=${user.SessionID}; Max-Age=1000;Path=/;`,
                 ];
