@@ -48,12 +48,22 @@
                     <div class="block bl-2048">2048</div>
                     <div class="block"></div>
                 </div>
-                <div class="score" id="score">
-                    <p>Your score: <span id="scoreValue">0</span></p>
+                <div class="hud UI-block" id="score">
+                    <div class="hud-item">
+                        <span class="hud-label">Score</span>
+                        <span class="hud-value" id="scoreValue">0</span>
+                    </div>
+
+                    <div class="hud-item">
+                        <span class="hud-label">Moves</span>
+                        <span class="hud-value" id="movesValue">0</span>
+                    </div>
+
+                    <div class="hud-item">
+                        <span class="hud-label">Player</span>
+                        <span class="hud-value" id="name">Test</span>
+                    </div>
                 </div>
-            </div>
-            <div class="stats">
-                <p></p>
             </div>
         </div>
         <div id="overlay"></div>

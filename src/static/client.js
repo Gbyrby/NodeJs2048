@@ -2,19 +2,22 @@ let keepAliveInterval;
 let gameData = {};
 // gameData.Board - массив 4x4 с числами
 // updateBoard(board) - уже есть, вызывает обновление интерфейса
-
+function updateMoves(moves) {
+    document.getElementById("movesValue").textContent = moves;
+}
 function handleGameOver() {
     console.log("💀 GAME OVER");
     // ⏱ через 3 секунды — затемнение
     setTimeout(() => {
         document.getElementById("overlay").classList.add("dark");
     }, 500);
-
-    // ⏱ через 6 секунд — рестарт
     setTimeout(() => {
         fetchRestart();
-        document.getElementById("overlay").classList.remove("dark");
     }, 2000);
+    // ⏱ через 6 секунд — рестарт
+    setTimeout(() => {
+        document.getElementById("overlay").classList.remove("dark");
+    }, 3000);
 }
 function isGameOver(board) {
     // 1️⃣ Есть пустая клетка — игра продолжается
@@ -134,11 +137,10 @@ function move(dir) {
 function openGame(result) {
     document.querySelector(".game-form").style.display = "none";
     document.querySelector(".elements-container").style.display = "grid";
-    document.querySelector(".score").style.display = "flex";
+    document.querySelector(".UI-block").style.display = "flex";
 
     // Обновляем UI данными от сервера
-    document.querySelector(".stats p").textContent =
-        `Игрок: ${result.Name} ${result.SessionID}`;
+    document.getElementById("name").textContent = result.Name;
     updateScore(result.Score);
     updateBoard(result.Board);
     clearInterval(keepAliveInterval);
@@ -149,7 +151,7 @@ function openGame(result) {
 function openForm() {
     document.querySelector(".game-form").style.display = "grid";
     document.querySelector(".elements-container").style.display = "none";
-    document.querySelector(".score").style.display = "none";
+    document.querySelector(".UI-block").style.display = "none";
     clearInterval(keepAliveInterval);
 }
 async function register(username) {
@@ -294,6 +296,7 @@ async function fetchRestart() {
                 //gameData.Score = result.Score;
                 updateBoard(gameData.Board);
                 updateScore(gameData.Score);
+                updateMoves(gameData.Moves);
             }
         } else {
             console.error("❌ Ошибка сервера:", result.error);
@@ -327,6 +330,7 @@ async function fetchMove(dir) {
                 //gameData.Score = result.Score;
                 updateBoard(gameData.Board);
                 updateScore(gameData.Score);
+                updateMoves(gameData.Moves);
                 if (
                     gameData.Score !== result.Score ||
                     gameData.Moves !== result.Moves
