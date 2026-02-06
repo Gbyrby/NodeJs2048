@@ -144,7 +144,7 @@ function openGame(result) {
     clearInterval(keepAliveInterval);
     keepAliveInterval = setInterval(() => {
         keepAlive();
-    }, 1000);
+    }, 3000);
 }
 function openForm() {
     document.querySelector(".game-form").style.display = "grid";
@@ -318,6 +318,7 @@ async function fetchMove(dir) {
 
         if (response.ok) {
             console.log("✅ Сервер ответил:", result);
+            document.getElementById("overlay").classList.remove("dark");
             move(dir);
             const Tile = result.PRNGTile;
             if (Tile) {
@@ -344,9 +345,11 @@ async function fetchMove(dir) {
             // Скрываем форму, показываем игру
         } else {
             console.error("❌ Ошибка сервера:", result.error);
+            document.getElementById("overlay").classList.add("dark");
         }
     } catch (error) {
         console.error("❌ Ошибка сети:", error);
+        document.getElementById("overlay").classList.add("dark");
     }
 }
 
