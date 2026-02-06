@@ -1,23 +1,35 @@
+const { move, clearBoard, addRandomTile } = require("./board.js");
+
 const users = new Map();
 
 //подобие на CRUD
 function createUser(Name) {
     const SessionID = crypto.randomUUID();
+    let board = clearBoard();
+    const Tile = addRandomTile(board);
+    if (Tile !== false) {
+        const [randomRow, randomCol, newTile] = Tile;
+
+        board[randomRow][randomCol] = newTile;
+        let PRNGTile = Tile;
+    }
     users.set(SessionID, {
         SessionID,
         Name,
         Time: Date.now(),
-        Board: [
-            // 4x4 числа
-            [0, 2, 0, 2],
-            [0, 0, 4, 0],
-            [0, 8, 0, 0],
-            [0, 0, 0, 16],
-        ],
+        Board: board,
         Moves: 0, // число
         Score: 0,
+        PRNGTile: Tile,
     });
     return users.get(SessionID);
+}
+
+function setUser(user) {
+    users.set(user.SessionID, {
+        ...user,
+    });
+    return users.get(user.SessionID);
 }
 
 function getUser(SessionID) {
@@ -38,13 +50,7 @@ function deleteUser(SessionID) {
     users.delete(SessionID);
 }
 
-console.log(users);
-
-createUser(123, "Test");
-console.log(users);
-
-setInterval(
-    () => {
+setInterval(() => {
     const time = Date.now();
     for (const [id, user] of users) {
         if (time - user.Time > 5000) {
@@ -58,4 +64,5 @@ module.exports = {
     getUser,
     updateUserTime,
     deleteUser,
+    setUser,
 };

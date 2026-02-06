@@ -22,7 +22,6 @@ module.exports = [
         path: "resync",
         handler(request, response) {
             let user = getUser(parseCookies(request).SessionID);
-            console.log(parseCookies(request).SessionID);
 
             if (user) {
                 updateUserTime(user.SessionID);

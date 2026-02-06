@@ -8,8 +8,14 @@ const crypto = require("crypto");
 const registerRoutes = require("./register.js");
 const resyncRoutes = require("./resync.js");
 const keepAliveRoutes = require("./keep-alive.js");
+const gameRoutes = require("./game.js");
 
-const routes = [...registerRoutes, ...resyncRoutes, ...keepAliveRoutes];
+const routes = [
+    ...registerRoutes,
+    ...resyncRoutes,
+    ...keepAliveRoutes,
+    ...gameRoutes,
+];
 
 module.exports = [
     {
@@ -29,7 +35,7 @@ module.exports = [
                 return 0;
             }
 
-            response.end(JSON.stringify("Error"));
+            response.end(JSON.stringify("Error in API router"));
         },
     },
 ];

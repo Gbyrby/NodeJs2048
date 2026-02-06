@@ -23,7 +23,6 @@ module.exports = [
         path: "keep-alive",
         handler(request, response) {
             let user = getUser(parseCookies(request).SessionID);
-            console.log(parseCookies(request).SessionID);
 
             if (user) {
                 updateUserTime(user.SessionID);

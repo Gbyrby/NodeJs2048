@@ -1,22 +1,20 @@
 const url = require("url");
 
 const staticRoutes = require("./static/router.js");
-const apiRoutes = require("./api/router.js")
+const apiRoutes = require("./api/router.js");
 
-const routes = [
-    ...staticRoutes,
-    ...apiRoutes,
-];
+const routes = [...staticRoutes, ...apiRoutes];
 
 module.exports = (req, res) => {
-
     let { pathname } = url.parse(req.url);
-    if(pathname === '/'){pathname = '/static/index.html'}
+    if (pathname === "/") {
+        pathname = "/static/index.html";
+    }
 
-    pathname = pathname.split('/')[1]
-    const route = routes.find(r =>
-        r.path === pathname
-    );
+    
+
+    pathname = pathname.split("/")[1];
+    const route = routes.find((r) => r.path === pathname);
 
     if (route) {
         return route.handler(req, res);
