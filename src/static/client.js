@@ -138,8 +138,8 @@ function openGame(result) {
     document.querySelector(".game-form").style.display = "none";
     document.querySelector(".elements-container").style.display = "grid";
     document.querySelector(".UI-block").style.display = "flex";
-    document.querySelector(".hud-button").style.display = "flex";
-    document.querySelector(".restart-button").style.display = "flex";
+    document.querySelector(".hud-action").style.display = "flex";
+
     // Обновляем UI данными от сервера
     document.getElementById("name").textContent = result.Name;
     updateScore(result.Score);
@@ -154,11 +154,10 @@ function openForm(FormText) {
     document.querySelector(".game-form").style.display = "grid";
     document.querySelector(".elements-container").style.display = "none";
     document.querySelector(".UI-block").style.display = "none";
-    document.querySelector(".hud-button").style.display = "none";
-    document.querySelector(".restart-button").style.display = "none";
+    document.querySelector(".hud-action").style.display = "none";
+
     const startBtn = document.getElementById("startBtn");
     startBtn.value = FormText;
-    clearInterval(keepAliveInterval);
 }
 async function register(username) {
     try {

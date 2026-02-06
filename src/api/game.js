@@ -1,5 +1,6 @@
 const { getUser, updateUserTime } = require("../models/users.js");
 const { move, clearBoard, addRandomTile } = require("../models/board.js");
+const { createUser, getTopUsers } = require("../models/db.js");
 function parseCookies(req) {
     const raw = req.headers.cookie || "";
     return Object.fromEntries(
@@ -42,13 +43,13 @@ module.exports = [
             const data = await getRequestBody(request);
             const dir = data.direction;
             const restart = data.restart;
+            let leaderboards;
             if (dir) {
                 let [board, moves, score] = move(user.Board, dir);
                 if (moves) {
                     const Tile = addRandomTile(board);
                     if (Tile !== false) {
                         const [randomRow, randomCol, newTile] = Tile;
-
                         board[randomRow][randomCol] = newTile;
                         user.PRNGTile = Tile;
                     }
@@ -62,6 +63,9 @@ module.exports = [
             }
 
             if (restart) {
+                await createUser(user.Name, user.Score, user.Moves);
+                leaderboards = await getTopUsers();
+                console.log("Leaderboards:", leaderboards);
                 user.Board = clearBoard();
                 user.Moves = 0;
                 user.Score = 0;
@@ -80,6 +84,7 @@ module.exports = [
                     Score: user.Score,
                     Moves: user.Moves,
                     PRNGTile: user.PRNGTile,
+                    Leaderboards: leaderboards,
                 }),
             );
         },

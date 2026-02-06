@@ -249,14 +249,13 @@ body {
 /* Блок кнопки под HUD */
 .hud-action {
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: center;
     margin-top: 12px;
 }
 
 /* Кнопка */
 .hud-button {
-    display: none;
     background: #796959;
     color: white;
     border: none;
