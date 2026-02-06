@@ -223,7 +223,6 @@ body {
 
     margin: 20px auto;
     width: fit-content;
-    display: none;
 }
 
 .hud-item {
@@ -245,4 +244,38 @@ body {
     font-weight: 800;
     color: #f9f6f2;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Блок кнопки под HUD */
+.hud-action {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+/* Кнопка */
+.hud-button {
+    display: none;
+    background: #796959;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
+}
+
+.hud-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+}
+
+.hud-button:active {
+    transform: translateY(0);
 }

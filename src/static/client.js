@@ -138,7 +138,7 @@ function openGame(result) {
     document.querySelector(".game-form").style.display = "none";
     document.querySelector(".elements-container").style.display = "grid";
     document.querySelector(".UI-block").style.display = "flex";
-
+    document.querySelector(".hud-button").style.display = "flex";
     // Обновляем UI данными от сервера
     document.getElementById("name").textContent = result.Name;
     updateScore(result.Score);
@@ -149,10 +149,13 @@ function openGame(result) {
         keepAlive();
     }, 3000);
 }
-function openForm() {
+function openForm(FormText) {
     document.querySelector(".game-form").style.display = "grid";
     document.querySelector(".elements-container").style.display = "none";
     document.querySelector(".UI-block").style.display = "none";
+    document.querySelector(".hud-button").style.display = "none";
+    const startBtn = document.getElementById("startBtn");
+    startBtn.value = FormText;
     clearInterval(keepAliveInterval);
 }
 async function register(username) {
@@ -209,11 +212,16 @@ function updateBoard(board) {
         }
     }
 }
-
+function handleFormChangeName(event) {
+    openForm("Продолжить игру");
+}
 // Привязываем обработчик к форме
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector(".game-form");
     form.addEventListener("submit", handleFormSubmit);
+
+    const nameButton = document.querySelector(".change-name-button");
+    nameButton.addEventListener("click", handleFormChangeName);
 });
 
 async function resync() {
@@ -230,7 +238,7 @@ async function resync() {
             gameData = { ...gameData, ...result };
             openGame(result);
         } else {
-            openForm();
+            openForm("Начать игру");
         }
     } catch (error) {}
 }
@@ -252,7 +260,7 @@ async function keepAlive() {
             if (gameData.Name) {
                 register(gameData.Name);
             } else {
-                openForm();
+                openForm("Начать игру");
             }
 
             console.log("✅ Сервер ответил:", result);
