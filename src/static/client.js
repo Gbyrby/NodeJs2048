@@ -356,9 +356,10 @@ async function fetchRestart() {
 async function fetchMove(dir) {
     if (waitServer) {
         console.log("Ждем");
+        document.getElementById("overlay").classList.add("dark");
         return 1;
     }
-    document.getElementById("overlay").classList.add("dark");
+
     waitServer = true;
     move(dir);
     updateBoard(gameData.Board);
