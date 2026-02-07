@@ -1,9 +1,9 @@
 const http = require("http");
 
 const router = require("./router");
-
+const port = process.env.PORT || 3000;
 http.createServer(function (request, response) {
     router(request, response);
-}).listen(3000, "127.0.0.1", function () {
-    console.log("Сервер начал прослушивание запросов на порту 3000");
+}).listen(port, "0.0.0.0", function () {
+    console.log(`Сервер начал прослушивание запросов на порту ${port}`);
 });
