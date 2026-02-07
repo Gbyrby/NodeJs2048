@@ -136,7 +136,6 @@ function move(dir) {
         gameData.Moves += 1;
     }
 }
-
 function updateLeaderboard(leaderboards) {
     const tbody = document.getElementById("leaderboardBody");
     if (!leaderboards?.length) {
@@ -147,15 +146,21 @@ function updateLeaderboard(leaderboards) {
     tbody.innerHTML = leaderboards
         .map(
             (user, index) => `
-        <tr class="rank-${index + 1 > 3 ? "normal" : index + 1}">
-            <td>${index + 1}.</td>
-            <td>${user.name || user.Name || "Без имени"}</td>
-            <td>${user.score || user.Score || 0}</td>
-            <td>${user.moves || user.Moves || 0}</td>
-        </tr>
-    `,
+            <tr class="rank-${index + 1 > 3 ? "normal" : index + 1}">
+                <td>${index + 1}.</td>
+                <td></td><td></td><td></td>  <!-- пустые ячейки -->
+            </tr>
+        `,
         )
         .join("");
+
+    // Заполняем безопасно ПОСЛЕ создания DOM
+    leaderboards.forEach((user, index) => {
+        const row = tbody.children[index];
+        row.cells[1].textContent = user.name || user.Name || "Без имени";
+        row.cells[2].textContent = user.score || user.Score || 0;
+        row.cells[3].textContent = user.moves || user.Moves || 0;
+    });
 }
 
 function openGame(result) {
