@@ -12,14 +12,14 @@ function handleGameOver() {
     console.log("💀 GAME OVER");
     // ⏱ через 3 секунды — затемнение
     setTimeout(() => {
-        document.getElementById("overlay").classList.add("dark");
+        document.getElementById("gameover").classList.add("dark");
     }, 500);
     setTimeout(() => {
         fetchRestart();
     }, 2000);
     // ⏱ через 6 секунд — рестарт
     setTimeout(() => {
-        document.getElementById("overlay").classList.remove("dark");
+        document.getElementById("gameover").classList.remove("dark");
     }, 3000);
 }
 function isGameOver(board) {
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     NameButton.addEventListener("click", handleFormChangeName);
 
     const restartButton = document.querySelector(".restart-button");
-    restartButton.addEventListener("click", fetchRestart);
+    restartButton.addEventListener("click", handleGameOver);
 });
 
 async function resync() {
@@ -451,7 +451,7 @@ document.addEventListener("keydown", (event) => {
             dir = "right";
             break;
         case "r":
-            fetchRestart();
+            handleGameOver();
             break;
         case "e":
             resync();

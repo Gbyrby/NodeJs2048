@@ -64,7 +64,9 @@ module.exports = [
 
             if (restart) {
                 await createUser(user.Name, user.Score, user.Moves);
-                leaderboards = await getTopUsers();
+                try {
+                    leaderboards = await getTopUsers();
+                } catch {}
                 user.Board = clearBoard();
                 user.Moves = 0;
                 user.Score = 0;
