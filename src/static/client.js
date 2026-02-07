@@ -3,14 +3,20 @@ let gameData = {};
 let inGame = false;
 let waitServer = false;
 let queueMoves = [];
+let gameOver = false;
 // gameData.Board - массив 4x4 с числами
 // updateBoard(board) - уже есть, вызывает обновление интерфейса
 function updateMoves(moves) {
     document.getElementById("movesValue").textContent = moves;
 }
 function handleGameOver() {
+    if (gameOver) return;
+
+    gameOver = true;
     console.log("💀 GAME OVER");
     // ⏱ через 3 секунды — затемнение
+    queueMoves.length = 0;
+
     setTimeout(() => {
         document.getElementById("gameover").classList.add("dark");
     }, 500);
@@ -20,6 +26,7 @@ function handleGameOver() {
     // ⏱ через 6 секунд — рестарт
     setTimeout(() => {
         document.getElementById("gameover").classList.remove("dark");
+        gameOver = false;
     }, 3000);
 }
 function isGameOver(board) {
@@ -359,6 +366,7 @@ async function fetchRestart() {
 }
 
 async function fetchMove(dir) {
+    if (gameOver) return; // ⛔ игра окончена
     if (waitServer) {
         console.log("Ждем");
         document.getElementById("overlay").classList.add("dark");
@@ -528,5 +536,8 @@ resync();
 setInterval(() => {
     if (queueMoves.length > 0) {
         fetchMove(queueMoves[0]);
+    }
+    if (gameOver) {
+        queueMoves = [];
     }
 }, 100);

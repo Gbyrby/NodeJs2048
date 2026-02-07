@@ -64,12 +64,12 @@ module.exports = [
 
             if (restart) {
                 await createUser(user.Name, user.Score, user.Moves);
-                try {
-                    leaderboards = await getTopUsers();
-                } catch {}
                 user.Board = clearBoard();
                 user.Moves = 0;
                 user.Score = 0;
+                try {
+                    leaderboards = await getTopUsers();
+                } catch {}
                 const Tile = addRandomTile(user.Board);
                 if (Tile !== false) {
                     const [randomRow, randomCol, newTile] = Tile;
