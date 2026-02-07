@@ -449,5 +449,56 @@ document.addEventListener("keydown", (event) => {
         fetchMove(dir);
     }
 });
+// 🖐️ ПРОСТО СКОПИРУЙ И ВСТАВЬ В КОНЕЦ ФАЙЛА (перед resync())
 
+// 📱 СВАЙПЫ ТОЛЬКО НА БЛОКАХ ИГРЫ
+let touchStartX = 0;
+let touchStartY = 0;
+const swipeThreshold = 40;
+
+// 🎯 Находим контейнер с блоками игры
+const gameBlocks = document.querySelector(".elements-container");
+
+gameBlocks.addEventListener(
+    "touchstart",
+    function (e) {
+        if (!inGame) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    },
+    { passive: true },
+);
+
+gameBlocks.addEventListener(
+    "touchend",
+    function (e) {
+        if (!inGame) return;
+
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+
+        if (Math.abs(dx) < swipeThreshold && Math.abs(dy) < swipeThreshold) {
+            return;
+        }
+
+        let dir;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            dir = dx > 0 ? "right" : "left";
+        } else {
+            dir = dy > 0 ? "down" : "up";
+        }
+
+        fetchMove(dir);
+    },
+    { passive: true },
+);
+
+// ❌ БЛОКИРУЕМ ПРОКРУТКУ ТОЛЬКО НА БЛОКАХ
+gameBlocks.addEventListener(
+    "touchmove",
+    function (e) {
+        e.preventDefault();
+    },
+    { passive: false },
+);
 resync();
