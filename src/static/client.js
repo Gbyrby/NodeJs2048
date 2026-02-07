@@ -1,6 +1,8 @@
 let keepAliveInterval;
 let gameData = {};
 let inGame = false;
+let waitServer = false;
+let queueMoves = [];
 // gameData.Board - массив 4x4 с числами
 // updateBoard(board) - уже есть, вызывает обновление интерфейса
 function updateMoves(moves) {
@@ -169,7 +171,7 @@ function openGame(result) {
     clearInterval(keepAliveInterval);
     keepAliveInterval = setInterval(() => {
         keepAlive();
-    }, 3000);
+    }, 10000);
 }
 function openForm(FormText) {
     inGame = false;
@@ -352,6 +354,19 @@ async function fetchRestart() {
 }
 
 async function fetchMove(dir) {
+    if (waitServer) {
+        console.log("Ждем");
+        return 1;
+    }
+    document.getElementById("overlay").classList.add("dark");
+    waitServer = true;
+    move(dir);
+    updateBoard(gameData.Board);
+    updateScore(gameData.Score);
+    updateMoves(gameData.Moves);
+    if (isGameOver(gameData.Board)) {
+        handleGameOver();
+    }
     try {
         // ✅ Отправляем POST запрос на сервер
         const response = await fetch("/api/game", {
@@ -367,7 +382,9 @@ async function fetchMove(dir) {
         if (response.ok) {
             console.log("✅ Сервер ответил:", result);
             document.getElementById("overlay").classList.remove("dark");
-            move(dir);
+            waitServer = false;
+            queueMoves.shift();
+
             const Tile = result.PRNGTile;
             if (Tile) {
                 const [randomRow, randomCol, newTile] = Tile;
@@ -385,10 +402,6 @@ async function fetchMove(dir) {
                         `${gameData.Score} ${result.Score} ${gameData.Moves} ${result.Moves}`,
                     );
                     console.log("РАССИНХРОНИЗЦИЯ!");
-                }
-
-                if (isGameOver(gameData.Board)) {
-                    handleGameOver();
                 }
             }
             // Скрываем форму, показываем игру
@@ -446,7 +459,9 @@ document.addEventListener("keydown", (event) => {
     }
 
     if (dir) {
-        fetchMove(dir);
+        if (queueMoves.length < 3) {
+            queueMoves.push(dir);
+        }
     }
 });
 // 🖐️ ПРОСТО СКОПИРУЙ И ВСТАВЬ В КОНЕЦ ФАЙЛА (перед resync())
@@ -487,8 +502,9 @@ gameBlocks.addEventListener(
         } else {
             dir = dy > 0 ? "down" : "up";
         }
-
-        fetchMove(dir);
+        if (queueMoves.length < 3) {
+            queueMoves.push(dir);
+        }
     },
     { passive: true },
 );
@@ -502,3 +518,9 @@ gameBlocks.addEventListener(
     { passive: false },
 );
 resync();
+
+setInterval(() => {
+    if (queueMoves.length > 0) {
+        fetchMove(queueMoves[0]);
+    }
+}, 100);

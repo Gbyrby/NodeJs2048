@@ -364,6 +364,10 @@ body {
 }
 
 @media (max-width: 600px) {
+    .container {
+        padding: 0px;
+        padding-bottom: 30px;
+    }
     .leaderboard {
         padding: 16px 20px;
     }
