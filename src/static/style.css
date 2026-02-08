@@ -329,16 +329,28 @@ body {
 }
 
 #overlay {
-    background: #0000;
+    background: #000000bf;
     inset: 0;
     pointer-events: none;
     position: fixed;
-    transition: background 1s ease 0.3s;
     z-index: 9999;
+    align-items: center; /* центр по вертикали */
+    justify-content: center; /* центр по горизонтали */
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.3s;
+}
+#overlay p {
+    text-align: center;
 }
 
 #overlay.dark {
-    background: #000000bf;
+    opacity: 1;
 }
 
 #gameover {
@@ -347,28 +359,25 @@ body {
     display: flex;
     align-items: center; /* центр по вертикали */
     justify-content: center; /* центр по горизонтали */
-
+    background: #000000bf;
     pointer-events: none;
     z-index: 10000;
 
     color: #fff;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 900;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-
     opacity: 0;
-    transform: scale(0.8);
-    transition:
-        opacity 0.4s ease,
-        transform 0.4s ease;
+    transition: opacity 0.4s ease;
 
     text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
-
+#gameover p {
+    text-align: center;
+}
 #gameover.dark {
     opacity: 1;
-    transform: scale(1);
 }
 
 @media (max-width: 900px) {

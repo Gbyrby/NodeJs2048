@@ -19,10 +19,10 @@ function handleGameOver() {
 
     setTimeout(() => {
         document.getElementById("gameover").classList.add("dark");
-    }, 500);
+    }, 1000);
     setTimeout(() => {
         fetchRestart();
-    }, 2000);
+    }, 1500);
     // ⏱ через 6 секунд — рестарт
     setTimeout(() => {
         document.getElementById("gameover").classList.remove("dark");
@@ -368,7 +368,7 @@ async function fetchRestart() {
 async function fetchMove(dir) {
     if (gameOver) return; // ⛔ игра окончена
     if (waitServer) {
-        console.log("Ждем");
+        //console.log("Ждем");
         document.getElementById("overlay").classList.add("dark");
         return 1;
     }
@@ -407,6 +407,9 @@ async function fetchMove(dir) {
                 updateBoard(gameData.Board);
                 updateScore(gameData.Score);
                 updateMoves(gameData.Moves);
+                if (isGameOver(gameData.Board)) {
+                    handleGameOver();
+                }
                 if (
                     gameData.Score !== result.Score ||
                     gameData.Moves !== result.Moves
@@ -540,4 +543,4 @@ setInterval(() => {
     if (gameOver) {
         queueMoves = [];
     }
-}, 100);
+}, 5);
