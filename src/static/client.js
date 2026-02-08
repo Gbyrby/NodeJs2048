@@ -313,6 +313,9 @@ async function keepAlive() {
             console.log("✅ Сервер ответил:", result);
         }
     } catch (error) {
+        setTimeout(() => {
+            keepAlive();
+        }, 500);
         console.log("✅ Сервер не ответил:", error);
         document.getElementById("overlay").classList.add("dark");
     }
@@ -427,6 +430,7 @@ async function fetchMove(dir) {
             document.getElementById("overlay").classList.add("dark");
         }
     } catch (error) {
+        waitServer = false;
         console.error("❌ Ошибка сети:", error);
         document.getElementById("overlay").classList.add("dark");
     }
