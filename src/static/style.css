@@ -182,7 +182,6 @@ body {
     font-weight: 700;
     justify-content: center;
     transition: background 0.2s ease;
-    transition: color 0.2s ease;
 }
 
 .block:empty {
