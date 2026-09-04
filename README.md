@@ -3,7 +3,7 @@
 Clone of 2048 game, using Node.js
 
 Это учебный проект клон игры 2028 для практики написания сервера на Node.js
-
+https://nodejs2048.onrender.com/
 # TODO:
 
 - ~~идентификация пользователей~~
